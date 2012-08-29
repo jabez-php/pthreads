@@ -76,20 +76,23 @@
 <li>Whatever run returns is returned when wait() is called, again, you cannot return resources or objects from run methods</li>
 </ul>
 <br />
-<p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors.
-If you have read this far and are still thinking "but how will I send asynchronous MySQL queries if I cannot pass resources for a thread to use?", then frankly I am disappointed: the simplest solution is always the best ... I'll spell it out: you do not need to pass resources between threads because you can pass the parameters that create them and create the resources in the thread scope, in the case of MySQL you might even consider using persistent connections.</p>
+<p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors.</p>
+<p>If you have read this far and are still thinking "but how will I send asynchronous MySQL queries if I cannot pass resources for a thread to use?", then frankly I am disappointed: the simplest solution is always the best ... I'll spell it out: you do not need to pass resources between threads because you can pass the parameters that create them and create the resources in the thread scope, in the case of MySQL you might even consider using persistent connections.</p>
 
 <h3>Features</h3>
-
-<p>Currently the following is working:</p>
-
+<p>Currently the following is implemented:</p>
 <ul>
 <li>Threads</li>
 <li>Mutex</li>
 <li>Conditions</li>
 </ul>
-      </section>
-    </div>
+<p>The following things are on my wish list:</p>
+<ul>
+  <li>Thread Groups - some methods to help manage arrays of threads basically, Threads::wait, Threads::start, Threads::busy etc</li>
+  <li>Thread Scheduling  - some methods to help schedule threads to run in the future, possibly even after the current request is serviced</li>
+</ul>
+</section>
+</div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
