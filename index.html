@@ -74,20 +74,19 @@
 <li>You cannot share resources or objects among threads</li>
 <li>The run method has a special scope: anything you set as a member in your constructor is available in run() without referencing $this</li>
 <li>Whatever run returns is returned when wait() is called, again, you cannot return resources or objects from run methods</li>
-</ul><p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors.
+</ul>
+<br />
+<p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors.
 If you have read this far and are still thinking "but how will I send asynchronous MySQL queries if I cannot pass resources for a thread to use?", then frankly I am disappointed: the simplest solution is always the best ... I'll spell it out: you do not need to pass resources between threads because you can pass the parameters that create them and create the resources in the thread scope, in the case of MySQL you might even consider using persistent connections.</p>
 
 <h3>Features</h3>
 
-<p>Threads on their own are of limited use in the real world. You need to be able to organize and synchronize your instructions in a multi-threaded application in any language. To that end Mutex's are available.
-More features are planned but not yet ready:</p>
+<p>Currently the following is working:</p>
 
 <ul>
-<li>Events</li>
+<li>Threads</li>
+<li>Mutex</li>
 <li>Conditions</li>
-<li>Thread Groups</li>
-<li>Sharing Variables during Runtime
-In time everything above will become ready, and I'll no doubt add to the list as I receive feedback from y'all.</li>
 </ul>
       </section>
     </div>
@@ -96,7 +95,6 @@ In time everything above will become ready, and I'll no doubt add to the list as
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">pthreads maintained by <a href="https://github.com/krakjoe">krakjoe</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
