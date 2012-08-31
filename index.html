@@ -63,7 +63,7 @@
 <span class="p">}</span>
 <span class="nv">$thread</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">HelloWorld</span><span class="p">(</span><span class="s2">"Threading 101"</span><span class="p">);</span>
 <span class="k">if</span><span class="p">(</span><span class="nv">$thread</span><span class="o">-&gt;</span><span class="na">start</span><span class="p">()){</span>
-    <span class="nv">$thread</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+    <span class="nv">$thread</span><span class="o">-&gt;</span><span class="na">join</span><span class="p">();</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div>
@@ -71,33 +71,34 @@
 <p>Threading in PHP should be and will be easy, and there's not much to know other than this:</p>
 
 <ul>
-<li>You cannot share resources or objects among threads</li>
+<li>You cannot share resources</li>
 <li>The run method has a special scope: anything you set as a member in your constructor is available in run() without referencing $this</li>
-<li>Whatever run returns is returned when wait() is called, again, you cannot return resources or objects from run methods</li>
-</ul>
-<br />
-<p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors.</p>
+<li>Whatever run returns is returned when join() is called, again, you cannot return resources</li>
+<li>Objects you pass must have built-in class definitions, user defined classes are unsupported</li>
+<li>You cannot pass references to threads with the &amp; operator</li>
+</ul><p>At first this might seem quite restrictive, with simplicity in mind: copying resources and class entries from other contexts is fraught with trouble, TSRM does a great job of keeping PHP thread safe, the implementation will be more stable if we do not ask it to do things that it simply doesn't want to do, like allow multiple threads to access the same resources concurrently. In the real world the above things actually just simplify usage and to a degree implementation. It's also worth mentioning that any function or method from any extension will run <strong>exactly</strong> the same inside a thread, which saves me a billion hours of testing and saves you from errors. In the future, you may have the option to import user defined classes and functions into new threads, or possibly even select classes/functions to import - as a feature this isn't very important to me so is the very last thing on my list.</p>
+
 <p>If you have read this far and are still thinking "but how will I send asynchronous MySQL queries if I cannot pass resources for a thread to use?", then frankly I am disappointed: the simplest solution is always the best ... I'll spell it out: you do not need to pass resources between threads because you can pass the parameters that create them and create the resources in the thread scope, in the case of MySQL you might even consider using persistent connections.</p>
 
 <h3>Features</h3>
-<p>Currently the following is implemented:</p>
+
+<p>Threads on their own are of limited use in the real world. You need to be able to organize and synchronize your instructions in a multi-threaded application in any language. To that end Mutex's and Condition variables are available.</p>
+
+<p>More features are planned but not yet ready:</p>
+
 <ul>
-<li>Threads</li>
-<li>Mutex</li>
-<li>Conditions</li>
-</ul>
-<p>The following things are on my wish list:</p>
-<ul>
-  <li>Thread Groups - some methods to help manage arrays of threads basically, Threads::wait, Threads::start, Threads::busy etc</li>
-  <li>Thread Scheduling  - some methods to help schedule threads to run in the future, possibly even after the current request is serviced</li>
-</ul>
-</section>
-</div>
+<li>Events</li>
+<li>Thread Groups</li>
+<li>Sharing Variables during Runtime</li>
+</ul><p>In time everything above will become ready, and I'll no doubt add to the list as I receive feedback from y'all.</p>
+      </section>
+    </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">pthreads maintained by <a href="https://github.com/krakjoe">krakjoe</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
