@@ -53,10 +53,10 @@
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">myvar</span> <span class="o">=</span> <span class="nv">$myvar</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">(){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nv">$myvar</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">myvar</span><span class="p">){</span>
             <span class="nb">printf</span><span class="p">(</span>
                 <span class="s2">"You passed %s as an argument and this is Thread #%lu</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> 
-                <span class="nv">$myvar</span><span class="p">,</span> <span class="nx">Thread</span><span class="o">::</span><span class="na">self</span><span class="p">()</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">myvar</span><span class="p">,</span> <span class="nx">Thread</span><span class="o">::</span><span class="na">self</span><span class="p">()</span>
             <span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -72,7 +72,6 @@
 
 <ul>
 <li>You cannot share resources</li>
-<li>The run method has a special scope: anything you set as a member in your constructor is available in run() without referencing $this</li>
 <li>Whatever run returns is returned when join() is called, again, you cannot return resources</li>
 <li>User defined classes used in members should have their declarations included in __prepare</li>
 <li>You cannot pass references to threads with the &amp; operator, use objects instead</li>
